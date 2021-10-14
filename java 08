@@ -1,0 +1,273 @@
+//  接口
+package com.interface_;
+
+public class Extends_VS_Interface {
+    public static void main(String[] args) {
+        LittleMonkey monkeySun = new LittleMonkey("孙悟空");
+        monkeySun.swimming();//猴子孙悟空通过学习学会了游泳
+        monkeySun.climbing();//猴子孙悟空会爬树
+        monkeySun.flying();//猴子孙悟空通过学习学会了飞翔
+    }
+}
+class Monkey{
+    private String name;
+    public void climbing(){
+        System.out.println("猴子"+getName()+"会爬树");
+    }
+    public Monkey(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+}
+class LittleMonkey extends Monkey implements Fish,Bird{
+    public LittleMonkey(String name) {
+        super(name);
+    }
+
+    @Override
+    public void swimming() {
+        System.out.println("猴子"+getName()+"通过学习学会了游泳");
+    }
+
+    @Override
+    public void flying() {
+        System.out.println("猴子"+getName()+"通过学习学会了飞翔");
+    }
+}
+// 接口1
+interface Fish{
+    void swimming();
+}
+// 接口2
+interface Bird{
+    void flying();
+}
+
+/*
+总结：当子类继承了父类，就自动拥有父类的功能
+     如果子类需要扩展功能，可以通过接口的方式扩展
+     所以接口可以说是单继承的一种补充
+
+     继承比接口更加灵活：
+     继承：A is B（cat is animal）
+     接口：A like B（cat like fish）
+ */
+ 
+ 
+ 
+ // 接口细节1
+ package com.interface_;
+public class interface_details_01 {
+    public static void main(String[] args) {
+
+    }
+}
+/*
+1.接口不能被实例化
+2.接口中所有的方法时public方法，接口中抽象方法 可以不用abstract修饰
+3.一个普通类实现接口，必须将其所有方法都实现，可以用 alt + enter 快捷键
+4.抽象类去实现接口时，可以不用实现接口的所有抽象方法
+ */
+interface IA {
+    void hi();
+    void cry();
+}
+class A implements IA{
+    @Override
+    public void hi() {
+        System.out.println("hi().....");
+    }
+
+    @Override
+    public void cry() {
+        System.out.println("cry()....");
+    }
+}
+
+
+
+ // 接口细节2
+ package com.interface_;
+public class interface_details_02 {
+    public static void main(String[] args) {
+        // 7.接口中属性的访问方式是 :接口.属性名
+        System.out.println(IB.n1);// n1为static
+        //IB.n1 = 20;// 报错，n1为final,无法修改
+    }
+}
+interface IB{
+    //6. 接口中的属性，只能是final的，而且是public static final 修饰符
+    int n1 = 10;// 等价于 public static final int n1 = 20;
+    void hi();
+}
+interface IC{
+    void hello();
+}
+//8. 接口不能继承其他类，但是可以继承多个其他的接口
+// 9.接口的修饰符 只能是 public 和 默认，和类的修饰符一样
+interface ID extends IB,IC{
+}
+//5. 一个类可以实现多个接口
+class Pig implements IB,IC{
+    @Override
+    public void hi() {
+    }
+    @Override
+    public void hello() {
+    }
+}
+
+
+
+// 接口练习
+public class interface_exercise {
+    public static void main(String[] args) {
+        B b = new B();
+        System.out.println(b.a);//23
+        System.out.println(AA.a);//23
+        System.out.println(B.a);//23
+    }
+}
+interface AA{
+    int a = 23;// public static final int a = 23;
+}
+class B implements AA{
+}
+
+
+
+// 接口的多态
+package com.interface_;
+
+public class InterfacePolyParameter {
+    public static void main(String[] args) {
+//        // 接口的多态体现
+//        IF if01 = new Monster();
+//        if01 = new Teacher();
+        Usb[] usbs = new Usb[2];
+        usbs[0] = new Phone();
+        usbs[1] = new Camera();
+        for (int i = 0; i < usbs.length; i++) {
+            usbs[i].work();
+            if(usbs[i] instanceof Phone){
+                ((Phone)usbs[i]).call();
+            }
+            else ((Camera)usbs[i]).photos();
+        }
+    }
+}
+//interface IF{}
+//class Monster implements IF{}
+//class Teacher implements IF{}
+
+interface Usb{
+    void work();
+}
+class Phone implements Usb{
+    public void call(){
+        System.out.println("手机可以打电话");
+    }
+    @Override
+    public void work() {
+        System.out.println("手机工作中");
+    }
+}
+class Camera implements Usb{
+    public void photos(){
+        System.out.println("相机可以照相");
+    }
+    @Override
+    public void work() {
+        System.out.println("相机工作中");
+    }
+}
+
+
+
+// 接口的多态传递
+public class InterfacePolyPass {
+    public static void main(String[] args) {
+        // 接口类型的变量可以指向 实现了该接口的类的对象实例
+        IG ig = new Teacher();
+        // 接口的多态传递现象
+        IH ih = new Teacher();
+    }
+}
+interface IH{
+    void hi();
+}
+interface IG extends IH{}
+class Teacher implements IG{
+    @Override
+    public void hi() {
+    }
+}
+
+
+
+// 内部类1
+package com.innerclass;
+public class innerclass_01 {
+    public static void main(String[] args) {
+
+    }
+}
+// 外部类
+class Outer{
+    // 属性
+    private int n1 = 100;
+    // 方法
+    public void hi(){
+        System.out.println("hi()~~~");
+    }
+    // 构造器
+    public Outer(int n1) {
+        this.n1 = n1;
+    }
+    // 代码块
+    {
+        System.out.println("代码块...");
+    }
+    // 内部类
+    class inter{
+    }
+}
+
+// 内部类2
+package com.innerclass;
+
+public class LocalInnerClass {
+    public static void main(String[] args) {
+        Outer02 outer02 = new Outer02();
+        outer02.hi();
+    }
+}
+// 演示局部内部类的使用
+class Outer02{
+    private int n1 = 100;
+    private void hello(){
+        System.out.println("hello().....");
+    }
+    public void hi(){
+        // 局部内部类是定义在外部类的局部位置，通常在方法中
+        // 不能添加修饰符但是可以用final修饰,用final修饰时，内部类不能被继承
+        // 作用域在该方法体内或者代码块内
+        final class Inner02{
+            // 局部内部类 可以访问外部类的所有成员，包括私有的
+            public void f1(){
+                // 局部内部类可以直接访问外部类的成员
+                System.out.println("n1 = "+n1);
+                hello();
+            }
+        }
+        // class Inner03 extends Inner02{}
+        // 外部类在方法中，可以创建Inner02的对象，然后调用方法
+        new Inner02().f1();
+    }
+}
